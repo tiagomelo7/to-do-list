@@ -1,0 +1,577 @@
+/* ========================================
+   CONFIGURAÇÕES GERAIS
+======================================== */
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: #f4f4f5;
+    color: #1e293b;
+}
+#app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* ========================================
+   ÁREA PRINCIPAL
+======================================== */
+body:has(#todolist) main {
+    width: 90%;
+    max-width: 700px;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: white;
+    border: 1px solid #d4d4d4;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+/* ========================================
+   CAMPO DE NOVA TAREFA
+======================================== */
+.entrada {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+}
+#campotask {
+    flex: 1;
+    min-width: 0;
+    padding: 12px 15px;
+    border: 1px solid #aaa;
+    border-radius: 8px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#campotask:focus {
+    border-color: #222;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+#adc {
+    flex-shrink: 0;
+    padding: 12px 18px;
+    border: 1px solid #111;
+    border-radius: 8px;
+    background: white;
+    color: #111;
+    font-size: 15px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+#adc:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+}
+#adc:active {
+    transform: translateY(0);
+}
+/* ========================================
+   MENSAGENS DE ESTADO
+======================================== */
+#mensagemTarefas {
+    margin: 12px 0 0;
+    font-size: 14px;
+    color: #64748b;
+}
+#mensagemTarefas:empty {
+    display: none;
+}
+#mensagemTarefas.erro {
+    color: #b91c1c;
+}
+/* ========================================
+   LISTA DE TAREFAS
+======================================== */
+#todolist {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin: 20px 0 0;
+    padding: 0;
+    list-style: none;
+}
+/* Cartão individual */
+#todolist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    height: 60px;
+    min-height: 60px;
+    padding: 10px 14px;
+    overflow: hidden;
+    background: #f8f8f8;
+    border: 1px solid #d4d4d4;
+    border-radius: 10px;
+    transition:
+        height 0.3s ease,
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+/* Expandir ao passar o mouse ou navegar por teclado */
+#todolist li:hover,
+#todolist li:focus-within {
+    height: 150px;
+    border-color: #999;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.05);
+    transform: translateY(-2px);
+}
+/* ========================================
+   TÍTULO E COMENTÁRIO
+======================================== */
+.info-tarefa {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    min-width: 0;
+}
+.titulo-tarefa {
+    display: block;
+    width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    line-height: 1.4;
+}
+/* Comentário */
+.comentario {
+    display: block;
+    flex-shrink: 0;
+    width: 100%;
+    max-height: 95px;
+    margin-top: 8px;
+    padding: 8px 10px;
+    overflow-y: auto;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    white-space: pre-wrap;
+    background: white;
+    border: 1px solid #d4d4d4;
+    border-radius: 6px;
+    color: #666;
+    font-size: 14px;
+    line-height: 1.4;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+#todolist li:hover .comentario,
+#todolist li:focus-within .comentario {
+    opacity: 1;
+}
+/* ========================================
+   CHECKBOX
+======================================== */
+#todolist li input[type="checkbox"] {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    margin: 3px 0 0;
+    accent-color: #15803d;
+    cursor: pointer;
+}
+#todolist li input[type="checkbox"]:disabled {
+    cursor: wait;
+    opacity: 0.6;
+}
+/* ========================================
+   BOTÃO EXCLUIR
+======================================== */
+#todolist li .botao-excluir {
+    flex-shrink: 0;
+    margin-left: auto;
+    padding: 7px 12px;
+    border: 1px solid #222;
+    border-radius: 6px;
+    background: white;
+    color: #222;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+#todolist li .botao-excluir:not(:disabled):hover {
+    background: #f0f0f0;
+    transform: scale(1.04);
+}
+#todolist li .botao-excluir:disabled {
+    cursor: wait;
+    opacity: 0.5;
+}
+/* ========================================
+   TAREFA CONCLUÍDA
+======================================== */
+#todolist li.concluida .titulo-tarefa {
+    color: #888;
+    text-decoration: line-through;
+}
+#todolist li.concluida {
+    background: #f3f4f6;
+}
+/* ========================================
+   MODAL DE COMENTÁRIO
+======================================== */
+#modalComentario {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity 0.25s ease,
+        visibility 0.25s ease;
+}
+#modalComentario.ativa {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+/* Conteúdo do modal */
+.modal-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 450px;
+    max-width: 100%;
+    max-height: 90vh;
+    padding: 30px;
+    overflow-y: auto;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    transform: scale(0.9);
+    opacity: 0;
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+#modalComentario.ativa .modal-conteudo {
+    transform: scale(1);
+    opacity: 1;
+}
+.modal-conteudo h2 {
+    margin: 0;
+    font-size: 22px;
+    color: #111827;
+}
+/* Prévia do título */
+#tituloTaskModal {
+    display: block;
+    padding: 10px 12px;
+    background: #f4f4f5;
+    border: 1px solid #d4d4d4;
+    border-radius: 8px;
+    font-weight: bold;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+/* Área de texto */
+#campoComentario {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    resize: vertical;
+    border: 1px solid #d4d4d8;
+    border-radius: 10px;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#campoComentario:focus {
+    border-color: #222;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+.acoes-modal {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.acoes-modal button {
+    padding: 12px 18px;
+    border: 1px solid #111;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s, opacity 0.2s;
+}
+#cancelarComentario {
+    background: white;
+    color: #111;
+}
+#cancelarComentario:hover:not(:disabled) {
+    background: #f0f0f0;
+}
+#adcComentario {
+    background: #111;
+    color: white;
+}
+#adcComentario:hover:not(:disabled) {
+    background: #333;
+    transform: translateY(-2px);
+}
+.acoes-modal button:active:not(:disabled) {
+    transform: translateY(0);
+}
+.acoes-modal button:disabled {
+    cursor: wait;
+    opacity: 0.5;
+}
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+@media (max-width: 600px) {
+    header {
+        padding: 16px 20px;
+        gap: 12px;
+    }
+    body:has(#todolist) main {
+        width: 94%;
+        padding: 18px;
+    }
+    .entrada {
+        gap: 8px;
+    }
+    #campotask {
+        font-size: 14px;
+        padding: 11px;
+    }
+    #adc {
+        padding: 11px 12px;
+        font-size: 14px;
+    }
+    #todolist li {
+        gap: 8px;
+        padding: 10px;
+    }
+    #todolist li:hover,
+    #todolist li:focus-within {
+        height: 170px;
+    }
+    #todolist li .botao-excluir {
+        padding: 7px 9px;
+        font-size: 12px;
+    }
+    .modal-conteudo {
+        padding: 22px;
+    }
+}
+@media (max-width: 380px) {
+    header {
+        padding: 14px;
+    }
+    .social-media {
+        gap: 8px;
+    }
+    body:has(#todolist) main {
+        padding: 14px;
+    }
+    #todolist li {
+        gap: 6px;
+        padding: 8px;
+    }
+    #todolist li .botao-excluir {
+        padding: 6px;
+    }
+}
+/* ========================================
+   CABEÇALHO ATUAL
+======================================== */
+header {
+    position: relative;
+    width: 100%;
+    min-height: 90px;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 10%;
+    min-width: 70px;
+    max-width: 105px;
+}
+.logo-img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+.social-media {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 22px;
+    flex-shrink: 0;
+}
+.social-media a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #1e293b;
+    font-size: 1.6rem;
+    line-height: 1;
+    text-decoration: none;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+.social-media a i,
+.social-media a svg {
+    font-size: inherit;
+    width: 1em;
+    height: 1em;
+}
+.social-media a:hover {
+    color: #0284c7;
+    transform: translateY(-3px);
+}
+.social-media a:focus-visible {
+    outline: 2px solid #0284c7;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+@media (max-width: 600px) {
+    header {
+        min-height: 75px;
+        padding: 16px 20px;
+    }
+    .logo {
+        width: 18%;
+        min-width: 60px;
+        max-width: 90px;
+    }
+    .social-media {
+        top: 16px;
+        right: 20px;
+        gap: 14px;
+    }
+    .social-media a {
+        font-size: 1.8rem;
+    }
+}
+/* ========================================
+   LOGIN E CADASTRO
+======================================== */
+.pagina-auth {
+    flex: 1;
+    align-self: stretch;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    background: #f4f5f4;
+}
+.auth-container {
+    width: 100%;
+    max-width: 420px;
+    margin: 0;
+    padding: 32px;
+    background: #ffffff;
+    border: 1px solid #e1e4e1;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+#tituloAuth {
+    margin: 0 0 24px;
+    color: #202520;
+    font-size: 28px;
+    font-weight: 700;
+    text-align: center;
+}
+.auth-container input {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin: 0 0 16px;
+    padding: 12px 14px;
+    border: 1px solid #d9ded9;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #202520;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.auth-container input:focus {
+    border-color: #222;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+}
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #111;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+.auth-container button:hover:not(:disabled) {
+    background: #333;
+}
+.auth-container button:active:not(:disabled) {
+    transform: scale(0.99);
+}
+.auth-container button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+.auth-container a {
+    color: #111;
+    font-weight: 600;
+    text-decoration: none;
+}
+.auth-container a:hover {
+    color: #333;
+    text-decoration: underline;
+}
+.auth-container p {
+    color: #666d66;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+}
+@media (max-width: 480px) {
+    .pagina-auth {
+        padding: 16px;
+    }
+    .auth-container {
+        padding: 24px;
+    }
+    #tituloAuth {
+        font-size: 25px;
+    }
+}
