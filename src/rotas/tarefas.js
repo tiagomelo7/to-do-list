@@ -1,5 +1,5 @@
-
 import { supabase } from '../supabase.js';
+import logo from '../assets/logotodo2.png';
 
 export function mostrarTarefas(usuarioId) {
     const app = document.getElementById('app');
@@ -10,10 +10,9 @@ export function mostrarTarefas(usuarioId) {
         <header>
             <div class="logo">
                 <img
-                    src="/src/assets/logotodo2.png"
+                    src="${logo}"
                     alt="Logo da To Do List"
-                    class="logo-img"
-                >
+                    class="logo-img">
             </div>
 
             <div class="social-media">
@@ -246,14 +245,7 @@ export function mostrarTarefas(usuarioId) {
                 }
 
                 li.remove();
-
-                if (lista.children.length === 0) {
-                    mostrarMensagem(
-                        'Você ainda não tem tarefas. Adicione a primeira!'
-                    );
-                } else {
-                    mostrarMensagem('');
-                }
+                mostrarMensagem('');
             });
 
             infoTarefa.appendChild(titulo);

@@ -7,7 +7,6 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
 dist
 dist-ssr
 *.local
@@ -44,3 +43,7 @@ pnpm-debug.log*
 .DS_Store
 .vscode/
 
+dist_electron/
+.vite-temp/dist_electron/
+node_modules/
+dist/

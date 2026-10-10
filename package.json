@@ -1,24 +1,54 @@
 {
   "name": "to-do-list",
-  "version": "0.0.0",
-  "private": true,
+  "productName": "todolist",
+  "version": "1.0.0",
+  "description": "Aplicativo de Lista de Tarefas",
+  "main": "main-electron.cjs",
   "type": "module",
+  "author": {
+  "name": "Tiago de Melo",
+  "email": "melotiago1007@gmail.com"
+},
+"homepage": "https://github.com/tiagomelo7/to-do-list",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"cross-env NODE_ENV=development vite\" \"wait-on http://localhost:5173 && electron .\"",
+    "electron:build": "vite build && electron-builder --linux deb",
+    "postinstall": "electron-builder install-app-deps"
+  },
+  "build": {
+    "appId": "com.todolist.app",
+    "productName": "todolist",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "files": [
+      "dist/**/*",
+      "main-electron.cjs",
+      "package.json",
+      "icon.png"
+    ],
+    "linux": {
+      "target": ["deb"],
+      "category": "Utility",
+      "icon": "icon.png"
+    }
   },
   "devDependencies": {
-    "vite": "^8.3.0"
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^9.2.5",
+    "cross-env": "^7.0.3",
+    "electron": "34.5.8",
+    "electron-builder": "26.15.3",
+    "electron-installer-debian": "^3.2.0",
+    "vite": "^8.3.4",
+    "wait-on": "^8.0.5"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.109.0",
-    "bcrypt": "^6.0.0",
-    "better-sqlite3": "^12.11.1",
-    "cookie-parser": "^1.4.7",
     "dotenv": "^18.0.5",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
     "navigo": "^8.11.1"
   }
 }
